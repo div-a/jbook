@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
-import * as esbuild from "esbuild-wasm";
-import { useRef } from "react";
-import { unpkgPathPlugin } from "./plugins/unpkg-path-plugin";
-import { fetchPlugin } from "./plugins/fetch-plugin";
+import React, { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
+import * as esbuild from 'esbuild-wasm';
+import { useRef } from 'react';
+import { unpkgPathPlugin } from './plugins/unpkg-path-plugin';
+import { fetchPlugin } from './plugins/fetch-plugin';
+import CodeEditor from './components/code-editor';
 
 const App = () => {
   const ref = useRef<any>();
   const iframe = useRef<any>();
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
 
   useEffect(() => {
     startService();
@@ -17,7 +18,7 @@ const App = () => {
   const startService = async () => {
     ref.current = await esbuild.startService({
       worker: true,
-      wasmURL: "https://unpkg.com/esbuild-wasm@0.8.27/esbuild.wasm",
+      wasmURL: 'https://unpkg.com/esbuild-wasm@0.8.27/esbuild.wasm',
     });
   };
 
@@ -29,18 +30,18 @@ const App = () => {
     iframe.current.srcdoc = html;
 
     const result = await ref.current.build({
-      entryPoints: ["index.js"],
+      entryPoints: ['index.js'],
       bundle: true,
       write: false,
       plugins: [unpkgPathPlugin(), fetchPlugin(input)],
       define: {
-        "process.env.NODE_ENV": '"production"',
-        global: "window",
+        'process.env.NODE_ENV': '"production"',
+        global: 'window',
       },
     });
 
     // setCode(result.outputFiles[0].text);
-    iframe.current.contentWindow.postMessage(result.outputFiles[0].text, "*");
+    iframe.current.contentWindow.postMessage(result.outputFiles[0].text, '*');
   };
 
   // code is output of bundling process
@@ -67,6 +68,10 @@ const App = () => {
 
   return (
     <div>
+      <CodeEditor
+        initialValue="const a = 1"
+        onChange={(value) => setInput(value)}
+      ></CodeEditor>
       <textarea
         value={input}
         onChange={(e) => setInput(e.target.value)}
@@ -85,7 +90,7 @@ const App = () => {
   );
 };
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
