@@ -1,14 +1,17 @@
 import React, { useEffect, useRef } from "react";
+import './preview.css'
 
 interface PreviewProps {
-    code: string;
+  code: string;
 }
 
 // code is output of bundling process
-  // takes output and places inside script tag to be executed inside iframe
-  const html = `
+// takes output and places inside script tag to be executed inside iframe
+const html = `
     <html> 
-      <head> </head>
+      <head> 
+      <style> html { background-color: white; } </style>
+      </head>
       <body> 
         <div id="root"> </div>
         <script>
@@ -26,21 +29,23 @@ interface PreviewProps {
     </html>
   `;
 
-const Preview: React.FC<PreviewProps> = ({code}) => {
-    const iframe = useRef<any>();
+const Preview: React.FC<PreviewProps> = ({ code }) => {
+  const iframe = useRef<any>();
 
-    useEffect(() => {
-        iframe.current.srcdoc = html;
-        iframe.current.contentWindow.postMessage(code, '*');
+  useEffect(() => {
+    iframe.current.srcdoc = html;
+    iframe.current.contentWindow.postMessage(code, '*');
 
-    }, [code]);
-    
-    return <iframe
-        ref={iframe}
-        title="preview"
-        sandbox="allow-scripts"
-        srcDoc={html}
-        />;
+  }, [code]);
+
+  return <div className="preview-wrapper">
+    <iframe
+      ref={iframe}
+      title="preview"
+      sandbox="allow-scripts"
+      srcDoc={html}
+    />;
+  </div>
 };
 
 export default Preview;
