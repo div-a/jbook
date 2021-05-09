@@ -1,4 +1,3 @@
-import 'bulmaswatch/superhero/bulmaswatch.min.css';
 import MonacoEditor, { EditorDidMount } from '@monaco-editor/react';
 import { useRef } from 'react';
 import prettier from 'prettier';
