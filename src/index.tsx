@@ -4,13 +4,13 @@ import TextEditor from './components/text-editor';
 import 'bulmaswatch/superhero/bulmaswatch.min.css';
 import { store } from './state';
 import { Provider } from 'react-redux';
+import CellList from './components/cell-list';
 
 const App = () => {
   return (
     <Provider store={store}>
       <div>
-        {/* <CodeCell/> */}
-        <TextEditor></TextEditor>
+        <CellList></CellList>
       </div>
     </Provider>
   );
